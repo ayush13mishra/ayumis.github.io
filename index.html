@@ -10,13 +10,89 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script>
+	var TxtRotate = function(el, toRotate, period) {
+  this.toRotate = toRotate;
+  this.el = el;
+  this.loopNum = 0;
+  this.period = parseInt(period, 10) || 2000;
+  this.txt = '';
+  this.tick();
+  this.isDeleting = false;
+};
+
+TxtRotate.prototype.tick = function() {
+  var i = this.loopNum % this.toRotate.length;
+  var fullTxt = this.toRotate[i];
+
+  if (this.isDeleting) {
+    this.txt = fullTxt.substring(0, this.txt.length - 1);
+  } else {
+    this.txt = fullTxt.substring(0, this.txt.length + 1);
+  }
+
+  this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+  var that = this;
+  var delta = 300 - Math.random() * 100;
+
+  if (this.isDeleting) { delta /= 2; }
+
+  if (!this.isDeleting && this.txt === fullTxt) {
+    delta = this.period;
+    this.isDeleting = true;
+  } else if (this.isDeleting && this.txt === '') {
+    this.isDeleting = false;
+    this.loopNum++;
+    delta = 500;
+  }
+
+  setTimeout(function() {
+    that.tick();
+  }, delta);
+};
+
+window.onload = function() {
+  var elements = document.getElementsByClassName('txt-rotate');
+  for (var i=0; i<elements.length; i++) {
+    var toRotate = elements[i].getAttribute('data-rotate');
+    var period = elements[i].getAttribute('data-period');
+    if (toRotate) {
+      new TxtRotate(elements[i], JSON.parse(toRotate), period);
+    }
+  }
+  // INJECT CSS
+  var css = document.createElement("style");
+  css.type = "text/css";
+  css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+  document.body.appendChild(css);
+};
+
+</script>
+
 <style>
-	body{ background-color:#000000;
-      color:#263238;
-	  
-	  font-family: "Courier New", Courier, monospace;}
+	
 	  .container-class{ background-color:#000000;
 	  }
+	  
+	  html,body {
+  font-family: 'Raleway', sans-serif;
+  padding: 1em 2em;
+  font-size: 18px;
+  background: #222;
+  color: #aaa
+}
+
+h1,h2 {
+  font-weight: 200;
+  margin: 0.4em 0;
+}
+h1 { font-size: 3.5em; }
+h2 {
+  color: #888;
+  font-size: 2em;
+}
+
 
 </style>
 
@@ -27,10 +103,17 @@
 <html>
   <body > 
    <div class="card ">
-	<h1 class="card-title text-center">Ayush Mishra</h1>
-	<h4 class="card-text">Hi, I am an Electrical and Computer Engineer. I am currently in 3rd year B.Tech Undergraduate at Delhi Technological University, India.
+   <link href="https://fonts.googleapis.com/css?family=Raleway:200,100,400" rel="stylesheet" type="text/css" />
+<h1 style="color:#000000">Ayush Mishra
+  <span
+     class="txt-rotate"
+     data-period="2000"
+     data-rotate='[ "Competitive Coder", "Android Developer", "Web Developer", "Problem Solver!", "Electrical Engineer" ]'></span>
+</h1>
+<h2>Hi, everyone</h2>
+	<h4 class="card-text">I am an Electrical and Computer Engineer. I am currently in 3rd year B.Tech Undergraduate at Delhi Technological University, India.
     
-    <h2>Professional Experience</h1>
+    <h2 style="color:#000000">Professional Experience</h1>
 		<ul class="font_size">
 			<li><h4>Electrical Engineering Intern, NTPC Ltd</h4></li>
 			<li><h4>Engineering Internhip, Honda Cars India Ltd</h4></li>
@@ -38,7 +121,7 @@
      
      
     
-    <h2>Educational Qualifications</h1>
+    <h2 style="color:#000000">Educational Qualifications</h1>
     <ul>
       <li><h4>B.Tech, Electrical Engineering and Computer Science, Delhi Technological University</h4></li>
           <ul>
@@ -55,17 +138,17 @@
      </div>
      
     <div class="card ">
-    <h2 class="card-title">Languages</h2>
+    <h2 class="card-title" style="color:#000000">Languages</h2>
     <h4 class="card-text">C++, C, Java, HTML, Javascript, CSS, Python (Basics)</h4>
     
 	<div class="card">
-    <h2 class="card-title">Other Skills</h2>
+    <h2 class="card-title" style="color:#000000">Other Skills</h2>
     <h4 class="card-text">Android Application Development, Web Development, Linux, Git (Version Control Softwares), Data Structures & Algorithms, Problem Solving</h4>
 	</div>
      </div>
     
     <div class="card">
-      <h2 class="card-title">Projects</h2>
+      <h2 class="card-title" style="color:#000000">Projects</h2>
         <div class="card">
 		<h4 class="card-title"><a href="https://github.com/ayush13mishra/code-play">CodePlay - Android Application</a></h4>
 		  <img src="./drawable/codeplay.jpg " style="width: 300; height: 400 "></img>
@@ -96,7 +179,7 @@
     </div>
      
             <div class="well well-sm">
-            <h2>Interest Areas</h2>
+            <h2 style="color:#000000">Interest Areas</h2>
               <ol>
                 <h4><li>Competitive Programming</li>
                 <h4><li>Android Application Development</li>
